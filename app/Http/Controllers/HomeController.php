@@ -54,16 +54,15 @@ class HomeController extends Controller
 
     $uid=\Auth::User()->id;
 
-
     foreach (array_keys($request->all()) as $key ) {
       switch ($key) {
         case 'wechat':
         \Auth::User()->update(['wechat_id' => $request->wechat]);
         return $this->show();
         break;
-        case 'phoneNumber':
+        case 'number':
 
-        \Auth::User()->update(['phone_number' => "(+".$request->phone.")".$request->phoneNumber]);
+        \Auth::User()->update(['phone_number' => "(+".$request->phone.")".$request->number]);
         return $this->show();
         break;
       }

@@ -27,11 +27,9 @@ class SkillsController extends Controller
     $validator = Validator::make($request->all(), [
       'skill' => ['required','string'],
     ]);
-
-    if (\Auth::User()->Skills->count()>15) {
-
-
-      return Redirect('/profile/'.\Auth::id())->withErrors(['Limit reached']);;
+    $nbSkill=\Auth::User()->Skills->count();
+    if ($nbSkill==15) {
+      return Redirect('/profile/'.\Auth::id())->withErrors(['Limit reached','add']);;
     }
 
 
@@ -39,7 +37,9 @@ class SkillsController extends Controller
 
 
     foreach ($request->all() as $key => $value) {
-
+      if ($nbSkill==15) {
+        return Redirect('/profile/'.\Auth::id())->withErrors(['Limit reached','add',]);;
+      }
       $skill = Skill::where('name',$value)->first();
       if ($skill==null) {
         $skill=Skill::create(['name' =>$value]);
@@ -47,6 +47,8 @@ class SkillsController extends Controller
       if ( !$skill->users->contains(\Auth::user())) {
         $skill->users()->attach(\Auth::User());
       }
+
+      $nbSkill++;
     }
     return redirect('/profile/'.\Auth::id());
 

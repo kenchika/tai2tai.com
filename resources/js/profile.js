@@ -132,9 +132,12 @@ contact.addEventListener('keyup', function (evt) {
 //select cotract type
 new MDCSelect(document.querySelector('#contractType'));
 
-new MDCSelect(document.querySelector('#phone'));
 
 
+var  selects = document.querySelectorAll('#phone');
+for (var i = 0, select; select = selects[i]; i++) {
+  MDCSelect.attachTo(select);
+}
 
 
 

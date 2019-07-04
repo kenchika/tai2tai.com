@@ -20,16 +20,17 @@ class ContractsController extends Controller
   }
   public function  add(request $request){
     $uid=\Auth::id();
+
     $contact=Contact::find($request->contactId);
     if ($contact==null) {
 
 
       $validatedData = $request->validate([
-        'amount' => ['required','string','max:255'],
+        'amount' => ['string','max:255'],
         'type' => ['required','string','max:255'],
         'state' => ['required','string','max:255'],
-        'comment' => ['required','string'],
-        
+        'comment' => ['string'],
+
 
         'number' => ['required','string'], //adress
         'name' => ['required','string'],
@@ -43,7 +44,7 @@ class ContractsController extends Controller
       $contact=Contact::create([
         'name' => $request->contactName,
         'fonction' => $request->fonction,
-        'phone_number' => $request->phoneNumber,
+        'phone_number' => "(+".$request->phone.")".$request->phoneNumber,
       ]);
       $adress=Adress::create([
         'number'=>$request->number,
@@ -73,10 +74,10 @@ class ContractsController extends Controller
     }
     else{
       $validatedData = $request->validate([
-        'amount' => ['required','string','max:255'],
+        'amount' => ['string','max:255'],
         'type' => ['required','string','max:255'],
         'state' => ['required','string','max:255'],
-        'comment' => ['required','string'],
+
     ]);
 
     }
@@ -107,6 +108,13 @@ class ContractsController extends Controller
    }
 
    public function destroy(request $request){
+
+     foreach (Contract::find($request->contract_id)->Invoice as $invoice) {
+       foreach ($invoice->Service as $service) {
+         $service->delete();
+       }
+       $invoice->delete();
+     }
      Contract::destroy($request->contract_id);
      $uid=\Auth::id();
      return redirect('/profile/'.$uid);

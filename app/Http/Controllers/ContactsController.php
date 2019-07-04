@@ -19,7 +19,7 @@ class ContactsController extends Controller
       if (count($data)>0) {
 
         foreach ($data as $row){
-          $output .= '	<li class="mdc-list-item" role="menuitem" >'.$row->name.' '.$row->fonction.' '.$row->phone_number.' '.$row->id.'</li>';
+          $output .= '	<li class="mdc-list-item" role="menuitem" >'.$row->name.' '.$row->fonction.' '.$row->company->english_name.' '.$row->id.'</li>';
 
         }
 

@@ -28,10 +28,12 @@ class CreateInvoiceTable extends Migration
             $table->integer('discount')->nullable();
             $table->integer('finalAmount')->nullable();
             $table->integer('invoiceNumber')->nullable();
+            $table->string('paymentTerm')->nullable();
+            $table->string('currency')->nullable();
             $table->string('comment')->nullable();
             $table->date('invoiceDate')->nullable();
             $table->unsignedBigInteger('contract_id')->nullable();
-            $table->foreign('contract_id')->references('id')->on('contact')->onDelete('cascade');
+            $table->foreign('contract_id')->references('id')->on('contract')->onDelete('cascade');
         });
     }
 

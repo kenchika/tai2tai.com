@@ -39,7 +39,34 @@ class InvoicesController extends Controller
             'total'=> $temp,
           ]);
           $total=$total+$temp;
-          $invoice->Service()->save($service);
+          $invoice->Service()->save($service); //6%
+        }
+
+        switch ($request->paymentTerm) {                      // payement term generation
+          case "IP":
+            $request->paymentTerm="Immediate Payment";
+            break;
+          case "DOR":
+            $request->paymentTerm="Due On Receipt";
+            break;
+          case "EOM":
+            $request->paymentTerm="End Of Month";
+            break;
+          case "Net7":
+            $request->paymentTerm="7 days after the invoice date";
+            break;
+          case "Net10":
+            $request->paymentTerm="10 days after the invoice date";
+            break;
+          case "Net15":
+            $request->paymentTerm="15 days after the invoice date";
+            break;
+          case "Net30":
+            $request->paymentTerm="30 days after the invoice date";
+            break;
+          case "Net60":
+            $request->payementTerm="60 days after the invoice date";
+            break;
         }
 
         $final=$total-$request->discount;
@@ -49,12 +76,16 @@ class InvoicesController extends Controller
           'comment' => $request->comment,
           'initialAmount' => $total,
           'discount' => $request->discount,
-          'finalAmount' => $final
+          'finalAmount' => $final,
+          'supplierNumber' => $request->supplierNumber,
+          'paymentTerm' => $request->paymentTerm,
+          'currency' => $request->currency
+        ]);
+        $contract->Contact->Company->update([
+          'tax_number' => $request->companyTaxNumber
         ]);
 
         unset($request);
-        //$pdf = PDF::loadView('invoice_pdf', [ 'contract'=>$contract,'invoice' => $invoice ]);
-        //return $pdf->download($contract->Contact->name.' invoice n°'.$invoice->invoiceNumber.'.pdf');
         return view('contract',['user' => $user_id,'contract' => $contract]);
       }
     }
@@ -88,9 +119,8 @@ class InvoicesController extends Controller
     $uid=\Auth::id();
     $contract = Contract::find($request->id);
     $invoice=Invoice::create([
-      'finalAmount' => $request->amountInvoice
+      'finalAmount' => "0"
     ]);
-    
     $contract->Invoice()->save($invoice);
     return redirect('/profile/'.$uid.'/contracts/'.$contract->id);
   }
@@ -109,6 +139,22 @@ class InvoicesController extends Controller
         return view('home',['user' => $user_id]);
       }
     }
+  }
+
+  public function destroy(request $request){
+    $uid=\Auth::id();
+    $invoice = Invoice::find($request->invoice_id);
+    if($uid==$invoice->Contract->User->id)
+      Invoice::destroy($request->invoice_id);
+    return redirect('/profile/'.$uid);
+  }
+
+  public function paid(request $request){
+    $uid=\Auth::id();
+    $invoice = Invoice::find($request->invoice_id);
+    if($uid==$invoice->Contract->User->id)
+      $invoice->update(['payementStatus' => 'paid']);
+    return redirect('/profile/'.$uid);
   }
 
 }

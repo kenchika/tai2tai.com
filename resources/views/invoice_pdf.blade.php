@@ -14,6 +14,9 @@
         .text-right {
             text-align: right;
         }
+        .text-left{
+            text-align: left;
+        }
         .resize {
           max-width:60%;
           max-height:60%;
@@ -37,7 +40,7 @@
             </div>
 
             <div class="col-xs-4">
-              <img class="resize" src="asset('img/logoTai2.png')" alt="logo">
+              <!--<img class="resize" src="{{url('/img/logoTai2.png')}}" alt="logo">-->
             </div>
         </div>
 
@@ -65,10 +68,10 @@
                             <th> Invoice Date: </th>
                             <td class="text-right">{{$invoice->invoiceDate}}</td>
                         </tr>
-                        @if($invoice->companyTaxNumber)
+                        @if($contract->Contact->Company->tax_number)
                         <tr>
                             <th>Company Tax Number: </th>
-                            <td class="text-right">{{$invoice->companyTaxNumber}}</td>
+                            <td class="text-right">{{$contract->Contact->Company->tax_number}}</td>
                         </tr>
                         @endif
                         @if($invoice->supplierNumber)
@@ -83,7 +86,7 @@
                 <div style="margin-bottom: 0px">&nbsp;</div>
 
                 <table style="width: 100%; margin-bottom: 20px">
-            <!--    <tbody>
+                    <!--    <tbody>
                         <tr class="well" style="padding: 5px">
                             <th style="padding: 5px"><div> Balance Due (CAD) </div></th>
                             <td style="padding: 5px" class="text-right"><strong> $600 </strong></td>
@@ -113,6 +116,8 @@
                     <td class="text-right">{{$service->total}}</td>
                   </tr>
                 @endforeach
+                <tr>
+                </tr>
             </tbody>
         </table>
 
@@ -121,19 +126,27 @@
                 <div class="col-xs-5">
                     <table style="width: 100%">
                         <tbody>
-                          <tr class="well" style="padding: 5px">
-                              <th style="padding: 5px"><div> total (YUAN)</div></th>
-                              <td style="padding: 5px" class="text-right"><strong>{{$invoice->initialAmount}}</strong></td>
-                          </tr>
                           @if($invoice->discount>0)
                           <tr class="well" style="padding: 5px">
-                              <th style="padding: 5px"><div> discount (YUAN) </div></th>
-                              <td style="padding: 5px" class="text-right"><strong>{{$invoice->discount}}</strong></td>
+                              <th style="padding: 5px"><div> Total ({{$invoice->currency}})</div></th>
+                              <td style="padding: 5px" class="text-right"><strong>{{$invoice->initialAmount}}</strong></td>
+                          </tr>
+                          <tr style="padding: 5px">
+                              <th style="padding: 4px"><div> Discount ({{$invoice->currency}})</div></th>
+                              <td style="padding: 5px" class="text-right">{{$invoice->discount}}</td>
                           </tr>
                           @endif
                           <tr class="well" style="padding: 5px">
-                              <th style="padding: 5px"><div> Balance Due (YUAN) </div></th>
+                              <th style="padding: 5px"><div> Balance Due Tax Free ({{$invoice->currency}})</div></th>
                               <td style="padding: 5px" class="text-right"><strong>{{$invoice->finalAmount}}</strong></td>
+                          </tr>
+                          <tr style="padding: 5px">
+                              <th style="padding: 4px"><div> VAT (6%) ({{$invoice->currency}})</div></th>                                          <!-- TAX IS HERE FOR THE FACTURATION-->
+                              <td style="padding: 5px" class="text-right">{{$invoice->finalAmount*0.06}}</td>
+                          </tr>
+                          <tr class="well" style="padding: 5px">
+                              <th style="padding: 5px"><div> Balance Due With VAT({{$invoice->currency}})</div></th>
+                              <td style="padding: 5px" class="text-right"><strong>{{$invoice->finalAmount+$invoice->finalAmount*0.06}}</strong></td>
                           </tr>
                         </tbody>
                     </table>
@@ -144,6 +157,13 @@
 
             <div class="row">
                 <div class="col-xs-8 invbody-terms">
+                  <strong>Payment Term :</strong><br>
+                  {{$invoice->paymentTerm}}.<br>
+                  <br>
+                  <strong>Bank Information</strong>
+                  account name :{{$contract->User->Bank->account_name}}<br>
+                  account number :{{$contract->User->Bank->account_number}}<br>
+                  <br>
                   @foreach ( explode("\n",$invoice->comment) as $ligne)         <!-- affichage des commentaires   -->
                   {{$ligne}}
                   <br>

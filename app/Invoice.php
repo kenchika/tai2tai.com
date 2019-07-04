@@ -17,7 +17,9 @@ class Invoice extends Model
       'finalAmount',
       'invoiceDate',
       'invoiceNumber',
-      'comment'
+      'comment',
+      'paymentTerm',
+      'currency',
   ];
   public function Contract(){
     return  $this->belongsTo(Contract::class);

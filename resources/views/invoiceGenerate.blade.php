@@ -96,7 +96,7 @@
                     </tr>
                     <tr>
                       <th>Company Tax Number:</th>
-                      <td><input  class="border rounded" type="input" placeholder="client Tax Number (optional)" value="{{$invoice->companyTaxNumber}}" name="companyTaxNumber"></td>
+                      <td><input  class="border rounded" type="input" placeholder="client Tax Number (optional)" value="{{$contract->Contact->Company->tax_number}}" name="companyTaxNumber"></td>
                     </tr>
                   </tbody>
                 </table>
@@ -122,7 +122,14 @@
                     <th>type</th>
                     <th>unit</th>
                     <th>per&nbsp;unit&nbsp;price</th>
-                    <th class="text-right">Price</th>
+                    <th class="text-right">Currency
+                      <select  name="currency" required>
+                        <option value="{{$invoice->currency}}" selected> {{$invoice->currency}}</option>     <!-- Payement Terms-->
+                        <option value="CNY">CNY</option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                      </select>
+                    </th>
                   </tr>
                 </thead>
                 @php
@@ -165,9 +172,21 @@
               <div class="nb">
                 <input type="hidden" name="nb" id="nb" value="{{$nb}}">
               </div>
-
               <div class="row">
                 <div class="col-lg-8">
+                  <div class="invbody-terms">
+                    <select  name="paymentTerm" required>
+                      <option value="{{$invoice->paymentTerm}}" selected> {{$invoice->paymentTerm}}</option>     <!-- Payement Terms-->
+                      <option value="IP">Immediate Payment</option>
+                      <option value="DOR">Due On Receipt</option>
+                      <option value="EOM">End Of Month</option>
+                      <option value="Net7">7 days after the invoice date</option>
+                      <option value="Net10">10 days after the invoice date</option>
+                      <option value="Net15">15 days after the invoice date</option>
+                      <option value="Net30">30 days after the invoice date</option>
+                      <option value="Net60">60 days after the invoice date</option>
+                    </select>
+                  </div>
                   <div class="invbody-terms">
                     <textarea name="comment" class="form-control border border-warning" rows="5" placeholder="optional comment area. Ex:Thank you for your business.">{{$invoice->comment}}</textarea>
                   </div>

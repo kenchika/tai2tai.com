@@ -1,7 +1,9 @@
 
+New client
+<br>
 email :{{ $request->email }}
 <br>name :{{ $request->name }}
-<br>phoneNumber :{{ $request->phoneNumber }}
+<br>phoneNumber :{{ "(+".$request->phone.")".$request->phoneNumber }}
 <br>company :{{ $request->company }}
 @if (!empty($request->description))
 <br>description :{{ $request->description }}
@@ -24,7 +26,7 @@ email :{{ $request->email }}
 @if (!empty($request->number))
 <br>number :{{ $request->number }}
 @endif
-@if ($request->sure=='on'))
+@if ($request->sure=='on')
 <br>not sure
 @endif
 @if (!empty($request->mandatory))

@@ -82,12 +82,16 @@
 				</button>
 				<div class="mdc-menu mdc-menu-surface mdc-menu-surface--anchor" id="actions" style="position:absolute">
 					<ul class="mdc-list" role="menu"  aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-						<a  class="text-decoration-none text-dark" method="get" >
-							<li class="mdc-list-item" role="menuitem">
-								<span class="mr-2">		<i class="material-icons mdc-button__icon">file_copy</i></span>
-								New&nbsp;invoice
-							</li>
-						</a>
+						<form action="{{ route('invoice.addInvoice')}}" method="get" style="margin-bottom:0px;">
+							@method('GET')
+							<input type="hidden" name="id" value="{{$contract->id}}">
+							<button  class="text-decoration-none text-dark" >
+								<li class="mdc-list-item" role="menuitem">
+									<span class="mr-2">		<i class="material-icons mdc-button__icon">file_copy</i></span>
+									New&nbsp;invoice
+								</li>
+							</button>
+						</form>
 						@if($contract->generationDate)
 						<a href="{{ route('contract.pdf',[ 'user'=> Auth::id(), 'contract_id'=> $contract->id ]) }}" class="text-decoration-none text-dark" >
 							<li class="mdc-list-item" role="menuitem">
@@ -102,23 +106,25 @@
 							</li>
 						</a>
 						@else
-						<a href="{{ route('contract.generation',[ 'user'=> Auth::id(), 'contract_id'=> $contract->id ]) }}" class="text-decoration-none text-dark" >
+						<a href="{{ route('contract.generation',[ 'user'=> Auth::id(), 'contract_id'=> $contract->id ]) }}" class="text-decoration-none text-dark " >
 							<li class="mdc-list-item" role="menuitem">
+									<span class="mr-2">		<i class="material-icons mdc-button__icon">insert_drive_file</i></span>
 								Create PDF
 							</li>
 						</a>
 						@endif
-
-						<form action="{{ route('contract.destroy')}}" class="text-decoration-none text-dark" method="get" >
+	<li class="mdc-list-item" role="menuitem">
+		<i class="material-icons mdc-button__icon">	remove_circle</i>
+						<form action="{{ route('contract.destroy')}}" method="get" style="margin-bottom:0px;" >
 							<input name="contract_id" type="hidden" value="{{$contract->id}}"/>
-							<button type="submit">
-								<li class="mdc-list-item" role="menuitem">
-									<span class="mr-2">		<i class="material-icons mdc-button__icon">close</i></span>
-									Delete
-								</li>
+							<button type="submit" class="pl-2">
+
+
+Delete
+
 							</a>
 						</form>
-
+	</li>
 					</ul>
 				</div>
 			</div>
@@ -130,18 +136,7 @@
 
 </div>
 
-<div class="col-lg-12 text-center">
-	add an invoice for this contract
-	<form action="{{ route('invoice.addInvoice')}}" method="get">
-		@method('GET')
-		<input name="amountInvoice" type="number"  placeholder="initial amount of the invoice" required/>
-		<input name="supplierNumber" type="text" placeholder="supplier number"/>
-		<input name="companyTaxNumber" type="text" placeholder="company Tax Number"/>
 
-		<input type="hidden" name="id" value="{{$contract->id}}">
-		<button class="btn btn-danger" type="submit" >add</button>
-	</form>
-</div>
 
 @foreach($contract->Invoice as $invoice)
 
