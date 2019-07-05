@@ -86,15 +86,16 @@ Route::get('contract/', 'ContractsController@destroy')->name('contract.destroy')
 
 
 Route::get('home', 'HomeController@index')->name('home');
-Route::get('/profile/{user}', 'HomeController@show')->name('profile.show');
-Route::put('/profile/edit', 'HomeController@edit')->name('profile.edit');
+Route::get('/profile/{user}', 'HomeController@show')->name('profile.show')->middleware('auth');
+Route::put('/profile/edit', 'HomeController@edit')->name('profile.edit')->middleware('auth');
 Route::get('/profile/{user}/contracts/{contract}', 'ContractsController@show')->name('contract.show');
 Route::put('contract/{user}/{contract}', 'ContractsController@save')->name('contract.save');
+
 Route::get('invoice/', 'ContractsController@addInvoice')->name('contract.addInvoice');
 Route::get('/profile/{user}/contracts/{contract}/{invoice}', 'InvoicesController@showInvoice')->name('invoice.showInvoice');
-
-
+Route::delete('invoice/', 'InvoicesController@destroy')->name('invoice.destroy');
 Route::get('/profile/{user}/contracts/{contract}/pdf/{invoice}', 'InvoicesController@pdf')->name('invoice.pdf');
+
 Route::get('/profile/{user}/pdf/contracts/{contract}', 'ContractsController@pdf')->name('contract.pdf');
 Route::get('/profile/{user}/generate/contracts/{contract}', 'ContractsController@generation')->name('contract.generation');
 

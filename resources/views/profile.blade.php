@@ -139,22 +139,17 @@
 					@if($loop->iteration==3)
 					@break
 					@endif
-					<a href="{{ route('contract.show',[ 'user'=> Auth::id(), 'contract_id'=> $contract->id ]) }}" class=" text-dark text-decoration-none py-5 "  >
-						<div class="row " style="margin-bottom:-10px" >
-							<div class="col-12 text-center">
+					<a href="{{ route('contract.show',[ 'user'=> Auth::id(), 'contract_id'=> $contract->id ]) }}" class=" text-dark text-decoration-none py-5"  >
+						<div class="mb-5 home-card bg-white   "  >
 
-								<p  class="my-auto py-2 mdc-typography--button font-weight-bold text-dark bg-secondary px-3 pb-3" style="border-radius:4px;"> {{$contract->contractState}}</p>
-							</div>
-							</div>
-
-							<!-- <div class="d-flex flex-row-reverse bd-highlight position-relative" style="margin-top:-20px;margin-right:40px;">
+							<div class="d-flex flex-row-reverse bd-highlight position-relative" style="margin-top:-20px;margin-right:40px;">
 
 								<div class=" bd-highlight" >	<p  class="my-auto text-right py-2 mdc-typography--subtitle1 font-weight-bold text-white bg-primary px-3" style="border-radius:4px"> {{$contract->contractState}}</p></div>
-							</div> -->
+							</div>
 
 
-							<div class=" px-5 py-5  bg-white home-card" style=" transform: translate3d(0px, 0px, 0px);">
-								<div class="row ">
+							<div class=" px-5 py-5">
+								<div class="row " >
 									<div class="col  font-weight-normal ">
 										<div align="left mdc-typography--button1">type</div>
 									</div>
@@ -168,7 +163,7 @@
 										<div align="left">Amount</div>
 									</div>
 									<div class="col  font-weight-normal ">
-										<div  align="right" class="font-weight-bold">{{$contract->contractAmount.' ¥'}}</div>
+										<div  align="right" class="font-weight-bold">{{$contract->contractAmount}}</div>
 									</div>
 								</div>
 								<hr>
@@ -198,9 +193,26 @@
 										<div  align="right" class="font-weight-bold">{{$contract->Contact->name}}</div>
 									</div>
 								</div>
+								<hr>
+								<div class="row ">
+									<div class="col  font-weight-normal mdc-typography--body1">
+										<div align="left">comment</div>
+									</div>
+									<div class="col  font-weight-normal ">
+										<div  align="right" class="font-weight-bold">{{$contract->comment}}</div>
+									</div>
+								</div>
+
+
+
+
 
 
 							</div>
+
+						</div>
+
+
 
 					</a>
 					@empty
