@@ -19,6 +19,8 @@ const path = require('path');
 
 const path = require('path');
 
-mix.js('resources/js/contract.js', 'public/js')
+mix.sass('resources/sass/app.scss', 'public/css', {
+includePaths: [path.resolve(__dirname, 'node_modules')]
+})
 
 ;
